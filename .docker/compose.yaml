@@ -1,6 +1,9 @@
 services:
   python:
-    image: python:latest
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    image: rag-tutorial-2026-python:3.12
     working_dir: /workspace
     volumes:
       - ..:/workspace

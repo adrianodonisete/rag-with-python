@@ -166,3 +166,4 @@ data/
 # local files
 dev/
 docs/
+.claude/
