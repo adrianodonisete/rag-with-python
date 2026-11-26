@@ -9,6 +9,15 @@ from langchain_text_splitters import CharacterTextSplitter
 load_dotenv()
 
 
+def create_embedding_model():
+    """Create OpenRouter-backed embeddings using its OpenAI-compatible API."""
+    return OpenAIEmbeddings(
+        model="openai/text-embedding-3-small",
+        api_key=os.environ["OPENROUTER_API_KEY"],
+        base_url=os.getenv("OPENAI_URL", "https://openrouter.ai/api/v1"),
+    )
+
+
 def load_documents(docs_path="docs"):
     """Load all text files from the docs directory"""
     print(f"Loading documents from {docs_path}...")
@@ -68,7 +77,7 @@ def create_vector_store(chunks, persist_directory="db/chroma_db"):
     """Create and persist ChromaDB vector store"""
     print("Creating embeddings and storing in ChromaDB...")
 
-    embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+    embedding_model = create_embedding_model()
 
     # Create ChromaDB vector store
     print("--- Creating vector store ---")
@@ -84,9 +93,21 @@ def create_vector_store(chunks, persist_directory="db/chroma_db"):
     return vectorstore
 
 
+def clean_db_documents(persist_directory="db/chroma_db"):
+    """Clean the documents"""
+    print("Cleaning documents...")
+
+    # delete persist_directory
+    os.remove(persist_directory)
+    print(f"Persist directory {persist_directory} deleted")
+
+
 def main():
     """Main ingestion pipeline"""
     print("=== RAG Document Ingestion Pipeline ===\n")
+
+    # model openai/text- embedding-3-small
+    # original text- embedding-3-small
 
     # Define paths
     docs_path = "docs"
@@ -96,7 +117,7 @@ def main():
     if os.path.exists(persistent_directory):
         print("✅ Vector store already exists. No need to re-process documents.")
 
-        embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+        embedding_model = create_embedding_model()
         vectorstore = Chroma(
             persist_directory=persistent_directory,
             embedding_function=embedding_model,
@@ -115,7 +136,7 @@ def main():
     # Step 2: Split into chunks
     chunks = split_documents(documents)
 
-    # # Step 3: Create vector store
+    # Step 3: Create vector store
     vectorstore = create_vector_store(chunks, persistent_directory)
 
     print("\n✅ Ingestion complete! Your documents are now ready for RAG queries.")

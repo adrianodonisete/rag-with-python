@@ -162,6 +162,7 @@ data/
 *.sqlite
 *.sqlite3
 *.db
+db/
 
 # local files
 dev/

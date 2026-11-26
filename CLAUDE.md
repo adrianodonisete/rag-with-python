@@ -20,10 +20,10 @@ python app.py
 # Start optional Docker development services
  docker compose -f .docker/compose.yaml up -d
 # Run ingestion in container
- docker compose -f .docker/compose.yaml exec python python ingestion_pipeline.py
+ docker exec -it python_pg python ingestion_pipeline.py
 ```
 
-Set `OPENAI_API_KEY` in local environment or `.env` before running ingestion or RAG examples; `python-dotenv` loads `.env`. Do not commit `.env`.
+Set `OPENROUTER_API_KEY` in local environment or `.env` before running ingestion; `python-dotenv` loads `.env`. Embeddings use OpenRouter endpoint `https://openrouter.ai/api/v1` and model `openai/text-embedding-3-small`. Do not commit `.env`.
 
 No test suite, test configuration, linter, or build configuration is currently defined. If pytest is installed and tests are added, run all with `python -m pytest`; run one test with `python -m pytest path/to/test_file.py::test_name`.
 
