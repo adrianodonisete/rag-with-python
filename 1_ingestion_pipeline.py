@@ -1,21 +1,9 @@
 import os
 
-from dotenv import load_dotenv
+from embedding_model import create_embedding_model
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
-
-load_dotenv()
-
-
-def create_embedding_model():
-    """Create OpenRouter-backed embeddings using its OpenAI-compatible API."""
-    return OpenAIEmbeddings(
-        model="openai/text-embedding-3-small",
-        api_key=os.environ["OPENROUTER_API_KEY"],
-        base_url=os.getenv("OPENAI_URL", "https://openrouter.ai/api/v1"),
-    )
 
 
 def load_documents(docs_path="docs"):
@@ -105,9 +93,6 @@ def clean_db_documents(persist_directory="db/chroma_db"):
 def main():
     """Main ingestion pipeline"""
     print("=== RAG Document Ingestion Pipeline ===\n")
-
-    # model openai/text- embedding-3-small
-    # original text- embedding-3-small
 
     # Define paths
     docs_path = "docs"

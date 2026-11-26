@@ -9,19 +9,3 @@ services:
       - ..:/workspace
     container_name: python_pg
     command: sleep infinity
-    depends_on:
-      - dbpgvector
-
-  dbpgvector:
-    image: pgvector/pgvector:pg17
-    environment:
-      POSTGRES_DB: rag
-      POSTGRES_USER: rag
-      POSTGRES_PASSWORD: rag
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
